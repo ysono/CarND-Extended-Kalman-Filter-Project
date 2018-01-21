@@ -3,7 +3,6 @@
 
 #include "measurement_package.h"
 #include "Eigen/Dense"
-#include <vector>
 #include <string>
 #include <fstream>
 #include "kalman_filter.h"
@@ -37,13 +36,20 @@ private:
 
   // previous timestamp
   long long previous_timestamp_;
+  float previous_dt_;
 
   // tool object used to compute Jacobian and RMSE
   Tools tools;
+
   Eigen::MatrixXd R_laser_;
   Eigen::MatrixXd R_radar_;
   Eigen::MatrixXd H_laser_;
-  Eigen::MatrixXd Hj_;
+
+  Eigen::MatrixXd F_;
+  Eigen::MatrixXd Q_;
+
+  float noise_ax;
+  float noise_ay;
 };
 
 #endif /* FusionEKF_H_ */

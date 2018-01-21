@@ -1,11 +1,10 @@
 #ifndef TOOLS_H_
 #define TOOLS_H_
-#include <vector>
+#include <tuple>
 #include "Eigen/Dense"
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
-using namespace std;
 
 class Tools {
 public:
@@ -19,16 +18,16 @@ public:
   */
   virtual ~Tools();
 
-  /**
-  * A helper method to calculate RMSE.
-  */
-  VectorXd CalculateRMSE(const vector<VectorXd> &estimations, const vector<VectorXd> &ground_truth);
+  VectorXd CalcRadarX(const VectorXd &z);
+  VectorXd CalcLaserX(const VectorXd &z);
 
-  /**
-  * A helper method to calculate Jacobians.
-  */
-  MatrixXd CalculateJacobian(const VectorXd& x_state);
+  std::tuple<VectorXd, MatrixXd> CalcRadarH(const VectorXd &x_state);
+  void CorrectRadarHPhase(const VectorXd &z, VectorXd &h);
 
+  VectorXd CalculateRMSE(VectorXd &previous_sse,
+                         int &previous_sse_count,
+                         const VectorXd &estimation,
+                         const VectorXd &ground_truth);
 };
 
 #endif /* TOOLS_H_ */
